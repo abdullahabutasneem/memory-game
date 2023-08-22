@@ -5,5 +5,5 @@ loginBtn.addEventListener('click', function () {
     const val = inputName.value;
     sessionStorage.setItem('key', val);
     inputName.value = '';
-    location.href = "index.html";
+    location.href = "main.html";
 })
