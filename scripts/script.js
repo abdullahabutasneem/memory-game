@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     // card options
     const cardArray = [
@@ -57,16 +58,22 @@ document.addEventListener('DOMContentLoaded', function () {
     let choosenCardId = [];
     let cardsWon = [];
 
+    const data = sessionStorage.getItem('key');
     const grid = document.getElementById('game-grid');
-    console.log("akib");
+    const scoreField = document.getElementById('show-score');
+    document.getElementById('show-name').innerText = data;
+
+    let perScore = 10;
+    let score = 0;
     // creating a game board
     function createBoard() {
         for (let i = 0; i < cardArray.length; i++) {
             var card = document.createElement('img');
             card.setAttribute('src', 'images/blank.png');
             card.setAttribute('data-id', i);
-            console.log(i);
+            // console.log(i);
             card.addEventListener('click', flipCard);
+
             grid.appendChild(card);
         }
     }
@@ -77,17 +84,28 @@ document.addEventListener('DOMContentLoaded', function () {
         const card1 = choosenCardId[0];
         const card2 = choosenCardId[1];
         if (choosenCard[0] === choosenCard[1]) {
-            alert('You found a match');
+            // alert('You found a match');
             cards[card1].setAttribute('src', 'images/white.png');
             cards[card2].setAttribute('src', 'images/white.png');
+            score = parseInt(score) + parseInt(perScore);
+            scoreField.innerText = score;
             cardsWon.push(choosenCard);
         } else {
-            alert('Did not match');
+            // alert('Did not match');
             cards[card1].setAttribute('src', 'images/blank.png');
             cards[card2].setAttribute('src', 'images/blank.png');
+            if (perScore >= 2) {
+                perScore = parseInt(perScore) - 1;
+            }
         }
         choosenCard = [];
         choosenCardId = [];
+        if (cardsWon.length === cardArray.length / 2) {
+            setTimeout(function () {
+                alert("You found all!");
+            }, 10);
+            location.href = "index.html";
+        }
     }
 
     // flip your card
@@ -101,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (choosenCardId.length == 2) {
             setTimeout(checkMatchCard, 100);
         }
+
     }
     createBoard();
 })
