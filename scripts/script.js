@@ -51,6 +51,12 @@ document.addEventListener('DOMContentLoaded', function () {
         },
     ]
 
+    cardArray.sort(() => 0.5 - Math.random())
+
+    let choosenCard = [];
+    let choosenCardId = [];
+    let cardsWon = [];
+
     const grid = document.getElementById('game-grid');
     console.log("akib");
     // creating a game board
@@ -60,11 +66,42 @@ document.addEventListener('DOMContentLoaded', function () {
             card.setAttribute('src', 'images/blank.png');
             card.setAttribute('data-id', i);
             console.log(i);
-            // card.addEventListener('click', flipCard);
+            card.addEventListener('click', flipCard);
             grid.appendChild(card);
         }
     }
 
+    // check matching card
+    function checkMatchCard() {
+        var cards = document.querySelectorAll('img');
+        const card1 = choosenCardId[0];
+        const card2 = choosenCardId[1];
+        if (choosenCard[0] === choosenCard[1]) {
+            alert('You found a match');
+            cards[card1].setAttribute('src', 'images/white.png');
+            cards[card2].setAttribute('src', 'images/white.png');
+            cardsWon.push(choosenCard);
+        } else {
+            alert('Did not match');
+            cards[card1].setAttribute('src', 'images/blank.png');
+            cards[card2].setAttribute('src', 'images/blank.png');
+        }
+        choosenCard = [];
+        choosenCardId = [];
+    }
+
+    // flip your card
+    function flipCard() {
+        var cardId = this.getAttribute('data-id');
+        const img = cardArray[cardId].img;
+        const name = cardArray[cardId].name;
+        this.setAttribute('src', img);
+        choosenCard.push(name);
+        choosenCardId.push(cardId);
+        if (choosenCardId.length == 2) {
+            setTimeout(checkMatchCard, 100);
+        }
+    }
     createBoard();
 })
 
