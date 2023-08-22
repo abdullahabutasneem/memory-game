@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const data = sessionStorage.getItem('key');
     const grid = document.getElementById('game-grid');
     const scoreField = document.getElementById('show-score');
+    const modal = document.getElementById('congrats');
     document.getElementById('show-name').innerText = data;
 
     let perScore = 10;
@@ -102,9 +103,8 @@ document.addEventListener('DOMContentLoaded', function () {
         choosenCardId = [];
         if (cardsWon.length === cardArray.length / 2) {
             setTimeout(function () {
-                alert("You found all!");
+                modal.showModal();
             }, 10);
-            location.href = "index.html";
         }
     }
 
@@ -113,13 +113,14 @@ document.addEventListener('DOMContentLoaded', function () {
         var cardId = this.getAttribute('data-id');
         const img = cardArray[cardId].img;
         const name = cardArray[cardId].name;
-        this.setAttribute('src', img);
-        choosenCard.push(name);
-        choosenCardId.push(cardId);
-        if (choosenCardId.length == 2) {
-            setTimeout(checkMatchCard, 100);
+        if (!cardsWon.includes(name)) {
+            this.setAttribute('src', img);
+            choosenCard.push(name);
+            choosenCardId.push(cardId);
+            if (choosenCardId.length == 2) {
+                setTimeout(checkMatchCard, 100);
+            }
         }
-
     }
     createBoard();
 })
